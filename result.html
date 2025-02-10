@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Crack Susceptibility Analysis Results</h1>
+
+        <div class="result-card">
+            <div class="prediction-section">
+                <h2>Prediction Result</h2>
+                <div class="prediction-value">{{ result.prediction }}</div>
+            </div>
+
+            <div class="probabilities-section">
+                <h2>Confidence Levels</h2>
+                {% for label, prob in result.probabilities.items() %}
+                <div class="probability-item">
+                    <span class="label">{{ label }}:</span>
+                    <div class="probability-bar-container">
+                        <div class="probability-bar" style="width: {{ prob * 100 }}%"></div>
+                        <span class="probability-value">{{ "%.1f"|format(prob * 100) }}%</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="elements-section">
+                <h2>Element Composition</h2>
+                <div class="elements-grid">
+                    {% for element in result.top_elements %}
+                    <div class="element-card">
+                        <div class="element-name">{{ element.element }}</div>
+                        <div class="element-value">{{ "%.4f"|format(element.value) }}%</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <a href="{{ url_for('home') }}" class="button">Make Another Prediction</a>
+        </div>
+    </div>
+</body>
+</html>
